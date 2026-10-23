@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>화성시 3D 경로 이동</title>
+<link href="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.css" rel="stylesheet">
+<script src="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.js"></script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="map"></div>
+
+<div id="head" class="panel">
+  <h1>화성시 3D 경로 이동</h1>
+  <div class="sub">A → B 도로 경로를 3D 지도 위에서 달린다 · OSM 도로(OSRM) + Mapterhorn 지형 · <span id="meta-date"></span></div>
+  <div class="sec"><b>경로</b><div id="route-btns"></div>
+    <div class="k" id="route-note"></div></div>
+  <div class="sec"><b>재생</b>
+    <button id="btn-play" class="on">▶ 재생</button><button id="btn-restart">⏮ 처음</button>
+    <span class="k">속도</span> <span id="speed-btns"></span>
+    <input type="range" id="seek" min="0" max="1000" value="0" aria-label="진행 위치">
+    <div class="num" id="readout">–</div>
+  </div>
+  <div class="sec"><b>카메라</b>
+    <button data-cam="follow" class="on">추적</button><button data-cam="overview">조감</button><button data-cam="free">자유</button>
+    <button id="btn-terrain">지형 켜기</button><button data-theme="day" class="on">낮</button><button data-theme="sunset">노을</button><button data-theme="night">밤</button>
+  </div>
+  <div class="sec"><b>투표소 득표 · 제21대 대선(2025-06-03)</b>
+    <button id="btn-votes">켜기</button><span class="k">투표소 188곳 · 기둥 높이 = 등록 선거인</span>
+    <div id="vote-modes" hidden></div>
+    <div id="vote-chips" hidden></div>
+    <div id="vote-legend" hidden><div class="bar" id="vote-bar"></div><span id="vl-min"></span><span id="vl-max" style="float:right"></span></div>
+    <div id="vote-hud" hidden>
+      <div class="hud-h"><b>인근 유권자 성향</b> <span class="k">차량 반경</span> <span id="rad-btns"></span></div>
+      <div id="hud-bar" class="stack"></div>
+      <div id="hud-text"></div>
+      <canvas id="hud-prof" width="640" height="110"></canvas>
+      <div class="k">그래프 = 이 경로를 따라 본 인근 성향(100% 누적) · 세로선 = 현재 위치</div>
+    </div>
+    <div class="warn" id="vote-note" hidden>득표·득표율은 <b>선거일 투표분</b>(유효투표 기준)만 — 관내사전·관외사전·거소·재외 제외. 기둥 높이는 사전투표자를 포함한 등록 국내 선거인. 읍면동 소계(선거일+관내사전)는 툴팁 참고.</div>
+  </div>
+</div>
+
+<div id="side" class="panel">
+  <b>지나는 곳</b> <span class="k">— 행정동 순서(100m 간격 판정)</span>
+  <ol id="dong-list"></ol>
+  <div class="k" id="dong-note"></div>
+</div>
+
+<div id="tip"></div>
+<div id="status">불러오는 중…</div>
+<script type="module" src="app.js"></script>
+</body>
+</html>
